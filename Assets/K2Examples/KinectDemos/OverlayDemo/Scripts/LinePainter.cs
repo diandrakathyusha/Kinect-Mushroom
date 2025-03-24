@@ -40,8 +40,9 @@ public class LinePainter : MonoBehaviour
 		}
 
 		
-		if(currentLine == null &&
-		   (handOverlayer && (handOverlayer.GetLastHandEvent() == InteractionManager.HandEventType.Grip)))
+		if(currentLine == null 
+			//&&		   (handOverlayer && (handOverlayer.GetLastHandEvent() == InteractionManager.HandEventType.Grip))
+			)
 		{
 			// start drawing lines
 			currentLine = Instantiate(linePrefab).GetComponent<LineRenderer>();
@@ -81,10 +82,23 @@ public class LinePainter : MonoBehaviour
 		}
 	}
 
+	public void DeleteAllLines()
+	{
+		for (int i = linesDrawn.Count - 1; i >= 0; i--)
+		{
+			GameObject line = linesDrawn[i];
+			Destroy(line);
+		}
+
+		linesDrawn.Clear(); // Clear the list after deleting all lines
+	}
+
 	// continue drawing line
 	IEnumerator DrawLine()
 	{
-		while(handOverlayer && (handOverlayer.GetLastHandEvent() == InteractionManager.HandEventType.Grip))
+		while(handOverlayer 
+			//&& (handOverlayer.GetLastHandEvent() == InteractionManager.HandEventType.Grip)
+			)
 		{
 			yield return new WaitForEndOfFrame();
 

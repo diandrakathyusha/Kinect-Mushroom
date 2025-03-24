@@ -1,10 +1,14 @@
 using UnityEngine;
 using System.Collections;
+using Cinemachine;
 
 public class LevelManager : MonoBehaviour
 {
     public GameObject[] lands;
-    public Camera mainCamera;
+    public CinemachineVirtualCamera cmUnderground;
+    public CinemachineVirtualCamera cmSurface;
+    public HandOverlayer handOverlayer;
+    public LinePainter linePainter;
     private int currentLevel = 0;
     public LevelData[] levelDatas;  // Attach ScriptableObjects here
 
@@ -23,16 +27,18 @@ public class LevelManager : MonoBehaviour
 
     public IEnumerator LoopLevels()
     {
-        while (true)
-        {
-            yield return new WaitForSeconds(2f); // Wait for player input
-            MyceliumPhase();
-            yield return new WaitForSeconds(4f); // Adjust timing
-            MushroomPhase();
-            yield return new WaitForSeconds(4f);
-            SporeDispersalPhase();
-            NextLevel();
-        }
+        yield return new WaitForSeconds(5f);
+        GoToUnderground();
+        //while (true)
+        //{
+           // yield return new WaitForSeconds(5f); // Wait for player input
+            //GoToUnderground();
+            //yield return new WaitForSeconds(4f); // Adjust timing
+            //GoToSurface();
+            //yield return new WaitForSeconds(4f);
+            //SporeDispersalPhase();
+            //NextLevel();
+        //}
     }
 
     public float GetMyceliumThreshold()
@@ -45,36 +51,40 @@ public class LevelManager : MonoBehaviour
         return levelDatas[currentLevel].sporeCount;
     }
 
-    private void MyceliumPhase()
+    private void GoToUnderground()
     {
-        mainCamera.transform.position = new Vector3(0, -5, -10);  // Underground view
-    }
-
-    private void MushroomPhase()
-    {
-        mainCamera.transform.position = new Vector3(0, 5, -10);   // Surface view
-    }
-
-    private void SporeDispersalPhase()
-    {
-        // Trigger spore dispersal
-        GameManager.Instance.OnMushroomGrowthComplete();
-    }
-
-    private void NextLevel()
-    {
-        lands[currentLevel].SetActive(false);
-        currentLevel = (currentLevel + 1) % lands.Length;
-        lands[currentLevel].SetActive(true);
+        handOverlayer.gameObject.SetActive(true);
+        cmUnderground.Priority = 10;
+        cmSurface.Priority = 5; // Underground view
     }
 
     public void GoToSurface()
     {
-        mainCamera.transform.position = new Vector3(0, 5, -10);
+        linePainter.DeleteAllLines();
+        handOverlayer.gameObject.SetActive(false);
+        cmUnderground.Priority = 5;
+        cmSurface.Priority = 10;
     }
+
+    public void SmoothTransition(bool isUnderground)
+    {
+        if (isUnderground) GoToUnderground();
+        else GoToSurface();
+    }
+
+    private void NextLevel()
+    {
+        //put smooth transition instead of whatever this is
+        lands[currentLevel].SetActive(false);
+        currentLevel = (currentLevel + 1) % lands.Length;
+        lands[currentLevel].SetActive(true);
+        StartCoroutine(LoopLevels());
+    }
+
 
     public void ReleaseSpores()
     {
         Debug.Log("Spores Released!");
+        NextLevel();
     }
 }

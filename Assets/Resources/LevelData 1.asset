@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e376994e13f47f4cb11d90d8702679d, type: 3}
   m_Name: LevelData 1
   m_EditorClassIdentifier: 
-  levelName: 
-  myceliumThreshold: 0
-  sporeCount: 0
+  levelName: land A
+  myceliumThreshold: 0.8
+  sporeCount: 10

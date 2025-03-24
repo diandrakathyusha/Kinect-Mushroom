@@ -37,6 +37,24 @@ public class MushroomGestureListener : MonoBehaviour
 			return instance;
 		}
 	}
+	void Awake()
+	{
+		instance = this;
+	}
+
+	void Update()
+	{
+		if (progressDisplayed && ((Time.realtimeSinceStartup - progressGestureTime) > 2f))
+		{
+			progressDisplayed = false;
+			gestureInfo.text = String.Empty;
+
+			Debug.Log("Forced progress to end.");
+		}
+
+		if (Input.GetKeyDown(KeyCode.W)) OnWaveGesture?.Invoke();  // Simulating wave
+		if (Input.GetKeyDown(KeyCode.T)) OnTapGesture?.Invoke();   // Simulating tap
+	}
 
 	/// <summary>
 	/// Determines whether swipe left is detected.
@@ -239,22 +257,4 @@ public class MushroomGestureListener : MonoBehaviour
 	}
 
 
-	void Awake()
-	{
-		instance = this;
-	}
-
-	void Update()
-	{
-		if (progressDisplayed && ((Time.realtimeSinceStartup - progressGestureTime) > 2f))
-		{
-			progressDisplayed = false;
-			gestureInfo.text = String.Empty;
-
-			Debug.Log("Forced progress to end.");
-		}
-
-		if (Input.GetKeyDown(KeyCode.W)) OnWaveGesture?.Invoke();  // Simulating wave
-		if (Input.GetKeyDown(KeyCode.T)) OnTapGesture?.Invoke();   // Simulating tap
-	}
 }

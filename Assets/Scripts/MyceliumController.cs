@@ -4,10 +4,11 @@ public class MyceliumController : MonoBehaviour
 {
     private float spreadProgress = 0f;
     private float spreadThreshold;
+    public LevelManager levelManager; 
 
     private void Start()
     {
-        spreadThreshold = GameManager.Instance.levelManager.GetMyceliumThreshold();
+        spreadThreshold = levelManager.GetMyceliumThreshold();
     }
 
     private void OnEnable()

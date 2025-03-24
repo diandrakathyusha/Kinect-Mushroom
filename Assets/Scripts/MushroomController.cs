@@ -4,10 +4,12 @@ public class MushroomController : MonoBehaviour
 {
     private int sporeCount;
     private int releasedSpores = 0;
+    public LevelManager levelManager;
+
 
     private void Start()
     {
-        sporeCount = GameManager.Instance.levelManager.GetSporeCount();
+        sporeCount = levelManager.GetSporeCount();
     }
 
     private void OnEnable()
@@ -22,7 +24,7 @@ public class MushroomController : MonoBehaviour
 
     private void ReleaseSpores()
     {
-        releasedSpores++;
+        releasedSpores += 1;
         Debug.Log("Spores Released: " + releasedSpores);
 
         if (releasedSpores >= sporeCount)
