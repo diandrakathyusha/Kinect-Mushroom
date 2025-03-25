@@ -5,7 +5,7 @@ public class MushroomController : MonoBehaviour
     private int sporeCount;
     private int releasedSpores = 0;
     public LevelManager levelManager;
-
+    public bool fullSpores= false;
 
     private void Start()
     {
@@ -14,7 +14,8 @@ public class MushroomController : MonoBehaviour
 
     private void OnEnable()
     {
-        MushroomGestureListener.OnTapGesture += ReleaseSpores;
+        if (!fullSpores)
+            MushroomGestureListener.OnTapGesture += ReleaseSpores;
     }
 
     private void OnDisable()
@@ -28,6 +29,11 @@ public class MushroomController : MonoBehaviour
         Debug.Log("Spores Released: " + releasedSpores);
 
         if (releasedSpores >= sporeCount)
+        {
             GameManager.Instance.OnMushroomGrowthComplete();
+            releasedSpores = 0;
+            fullSpores = true;
+        }
+
     }
 }

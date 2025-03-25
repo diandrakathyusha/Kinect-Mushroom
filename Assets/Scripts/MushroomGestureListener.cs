@@ -13,6 +13,8 @@ public class MushroomGestureListener : MonoBehaviour
 	// singleton instance of the class
 	private static MushroomGestureListener instance = null;
 
+	public LevelManager levelManager;
+
 	// internal variables to track if progress message has been displayed
 	private bool progressDisplayed;
 	private float progressGestureTime;
@@ -52,8 +54,10 @@ public class MushroomGestureListener : MonoBehaviour
 			Debug.Log("Forced progress to end.");
 		}
 
-		if (Input.GetKeyDown(KeyCode.W)) OnWaveGesture?.Invoke();  // Simulating wave
-		if (Input.GetKeyDown(KeyCode.T)) OnTapGesture?.Invoke();   // Simulating tap
+		if (Input.GetKeyDown(KeyCode.W) && levelManager.underground) 
+			OnWaveGesture?.Invoke();  // Simulating wave
+		if (Input.GetKeyDown(KeyCode.T) && !levelManager.underground) 
+			OnTapGesture?.Invoke();   // Simulating tap
 	}
 
 	/// <summary>

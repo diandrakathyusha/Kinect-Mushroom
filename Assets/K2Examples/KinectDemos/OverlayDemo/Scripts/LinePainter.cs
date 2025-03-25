@@ -21,6 +21,8 @@ public class LinePainter : MonoBehaviour
 		handOverlayer = GetComponent<HandOverlayer>();
 	}
 
+
+
 	void Update()
 	{
 		if(Input.GetKeyDown(KeyCode.U))

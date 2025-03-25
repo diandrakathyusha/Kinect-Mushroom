@@ -4,7 +4,8 @@ public class MyceliumController : MonoBehaviour
 {
     private float spreadProgress = 0f;
     private float spreadThreshold;
-    public LevelManager levelManager; 
+    public LevelManager levelManager;
+    public bool fullMycelium = false;
 
     private void Start()
     {
@@ -13,12 +14,13 @@ public class MyceliumController : MonoBehaviour
 
     private void OnEnable()
     {
+        if (!fullMycelium)
         MushroomGestureListener.OnWaveGesture += SpreadMycelium;
     }
 
     private void OnDisable()
     {
-           MushroomGestureListener.OnWaveGesture -= SpreadMycelium;
+        MushroomGestureListener.OnWaveGesture -= SpreadMycelium;
     }
 
     private void SpreadMycelium()
@@ -27,7 +29,12 @@ public class MyceliumController : MonoBehaviour
         UpdateVisuals();
 
         if (spreadProgress >= spreadThreshold)
+        {
             GameManager.Instance.OnMyceliumComplete();
+            spreadProgress = 0;
+            fullMycelium = true;
+        }
+
     }
 
     private void UpdateVisuals()

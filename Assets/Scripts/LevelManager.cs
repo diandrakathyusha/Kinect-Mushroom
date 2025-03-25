@@ -9,6 +9,9 @@ public class LevelManager : MonoBehaviour
     public CinemachineVirtualCamera cmSurface;
     public HandOverlayer handOverlayer;
     public LinePainter linePainter;
+    public MyceliumController myceliumController;
+    public MushroomController mushroomController;
+    public bool underground;
     private int currentLevel = 0;
     public LevelData[] levelDatas;  // Attach ScriptableObjects here
 
@@ -56,6 +59,7 @@ public class LevelManager : MonoBehaviour
         handOverlayer.gameObject.SetActive(true);
         cmUnderground.Priority = 10;
         cmSurface.Priority = 5; // Underground view
+        underground = true;
     }
 
     public void GoToSurface()
@@ -64,6 +68,7 @@ public class LevelManager : MonoBehaviour
         handOverlayer.gameObject.SetActive(false);
         cmUnderground.Priority = 5;
         cmSurface.Priority = 10;
+        underground = false;
     }
 
     public void SmoothTransition(bool isUnderground)
@@ -85,6 +90,8 @@ public class LevelManager : MonoBehaviour
     public void ReleaseSpores()
     {
         Debug.Log("Spores Released!");
+        myceliumController.fullMycelium = false;
+        mushroomController.fullSpores = false;
         NextLevel();
     }
 }
