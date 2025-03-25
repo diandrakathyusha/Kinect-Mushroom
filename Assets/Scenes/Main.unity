@@ -368,6 +368,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &513828313 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1707149221717788, guid: 2ca47dd4865ab7847b52b640c13e2686, type: 3}
+  m_PrefabInstance: {fileID: 640342171}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &519935417
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,7 +414,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519935417}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71d266e060ac5a34ca8414251e553b08, type: 3}
   m_Name: 
@@ -579,6 +584,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: pf_vfx-ult_demo_psys_loop_attraction2
       objectReference: {fileID: 0}
+    - target: {fileID: 1707149221717788, guid: 2ca47dd4865ab7847b52b640c13e2686, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4997435712503268, guid: 2ca47dd4865ab7847b52b640c13e2686, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -629,7 +638,51 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114764862228387018, guid: 2ca47dd4865ab7847b52b640c13e2686, type: 3}
       propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198192290790361394, guid: 2ca47dd4865ab7847b52b640c13e2686, type: 3}
+      propertyPath: lengthInSec
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 198192290790361394, guid: 2ca47dd4865ab7847b52b640c13e2686, type: 3}
+      propertyPath: TrailModule.mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198192290790361394, guid: 2ca47dd4865ab7847b52b640c13e2686, type: 3}
+      propertyPath: TrailModule.worldSpace
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198192290790361394, guid: 2ca47dd4865ab7847b52b640c13e2686, type: 3}
+      propertyPath: TrailModule.dieWithParticles
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 198192290790361394, guid: 2ca47dd4865ab7847b52b640c13e2686, type: 3}
+      propertyPath: InitialModule.maxNumParticles
+      value: 100000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198192290790361394, guid: 2ca47dd4865ab7847b52b640c13e2686, type: 3}
+      propertyPath: TrailModule.lifetime.minMaxState
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198192290790361394, guid: 2ca47dd4865ab7847b52b640c13e2686, type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 198192290790361394, guid: 2ca47dd4865ab7847b52b640c13e2686, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 198192290790361394, guid: 2ca47dd4865ab7847b52b640c13e2686, type: 3}
+      propertyPath: InitialModule.startLifetime.minScalar
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 198192290790361394, guid: 2ca47dd4865ab7847b52b640c13e2686, type: 3}
+      propertyPath: EmissionModule.rateOverDistance.scalar
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 198192290790361394, guid: 2ca47dd4865ab7847b52b640c13e2686, type: 3}
+      propertyPath: InitialModule.startLifetime.minMaxState
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 199208821319616272, guid: 2ca47dd4865ab7847b52b640c13e2686, type: 3}
       propertyPath: m_Materials.Array.size
@@ -1001,10 +1054,10 @@ MonoBehaviour:
   guiHandCursor: {fileID: 0}
   gripHandTexture: {fileID: 21300000, guid: 475d892be250472448901e2ac7e4f3da, type: 3}
   releaseHandTexture: {fileID: 21300000, guid: deab68507f779a144b807ddc9587f2fe, type: 3}
-  normalHandTexture: {fileID: 21300000, guid: deab68507f779a144b807ddc9587f2fe, type: 3}
+  normalHandTexture: {fileID: 21300000, guid: 55b9da46e4eef3f4cafab36e66796aeb, type: 3}
   handOverlayCursor: 0
-  smoothFactor: 3
-  allowHandClicks: 0
+  smoothFactor: 10
+  allowHandClicks: 1
   allowPushToClick: 0
   controlMouseCursor: 0
   controlMouseDrag: 0
@@ -1026,10 +1079,10 @@ MonoBehaviour:
   sensorHeight: 1
   sensorAngle: 0
   autoHeightAngle: 0
-  computeUserMap: 1
+  computeUserMap: 3
   computeColorMap: 1
   computeInfraredMap: 0
-  displayUserMap: 0
+  displayUserMap: 1
   displayColorMap: 0
   displaySkeletonLines: 0
   DisplayMapsWidthPercent: 20
@@ -1920,6 +1973,139 @@ Transform:
   - {fileID: 363115843}
   m_Father: {fileID: 1038724073}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1807141713
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 160762, guid: 56480d0c436b84b4ba158d3e374edd01, type: 3}
+      propertyPath: m_Name
+      value: pf_vfx-ult_demo_psys_loop_aura
+      objectReference: {fileID: 0}
+    - target: {fileID: 449852, guid: 56480d0c436b84b4ba158d3e374edd01, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 449852, guid: 56480d0c436b84b4ba158d3e374edd01, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.33
+      objectReference: {fileID: 0}
+    - target: {fileID: 449852, guid: 56480d0c436b84b4ba158d3e374edd01, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 15.46
+      objectReference: {fileID: 0}
+    - target: {fileID: 449852, guid: 56480d0c436b84b4ba158d3e374edd01, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 449852, guid: 56480d0c436b84b4ba158d3e374edd01, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 449852, guid: 56480d0c436b84b4ba158d3e374edd01, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 449852, guid: 56480d0c436b84b4ba158d3e374edd01, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 449852, guid: 56480d0c436b84b4ba158d3e374edd01, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 449852, guid: 56480d0c436b84b4ba158d3e374edd01, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 449852, guid: 56480d0c436b84b4ba158d3e374edd01, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 19844840, guid: 56480d0c436b84b4ba158d3e374edd01, type: 3}
+      propertyPath: InitialModule.maxNumParticles
+      value: 393
+      objectReference: {fileID: 0}
+    - target: {fileID: 19844840, guid: 56480d0c436b84b4ba158d3e374edd01, type: 3}
+      propertyPath: InitialModule.startSizeY.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19844840, guid: 56480d0c436b84b4ba158d3e374edd01, type: 3}
+      propertyPath: InitialModule.startSizeZ.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19844840, guid: 56480d0c436b84b4ba158d3e374edd01, type: 3}
+      propertyPath: InitialModule.startRotationX.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19844840, guid: 56480d0c436b84b4ba158d3e374edd01, type: 3}
+      propertyPath: InitialModule.startRotationY.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19873840, guid: 56480d0c436b84b4ba158d3e374edd01, type: 3}
+      propertyPath: InitialModule.startSizeY.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19873840, guid: 56480d0c436b84b4ba158d3e374edd01, type: 3}
+      propertyPath: InitialModule.startSizeZ.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19880862, guid: 56480d0c436b84b4ba158d3e374edd01, type: 3}
+      propertyPath: ShapeModule.radius.value
+      value: 1.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 19880862, guid: 56480d0c436b84b4ba158d3e374edd01, type: 3}
+      propertyPath: InitialModule.maxNumParticles
+      value: 440
+      objectReference: {fileID: 0}
+    - target: {fileID: 19880862, guid: 56480d0c436b84b4ba158d3e374edd01, type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 19880862, guid: 56480d0c436b84b4ba158d3e374edd01, type: 3}
+      propertyPath: InitialModule.startSizeY.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19880862, guid: 56480d0c436b84b4ba158d3e374edd01, type: 3}
+      propertyPath: InitialModule.startSizeZ.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19880862, guid: 56480d0c436b84b4ba158d3e374edd01, type: 3}
+      propertyPath: EmissionModule.rateOverDistance.scalar
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 19880862, guid: 56480d0c436b84b4ba158d3e374edd01, type: 3}
+      propertyPath: InitialModule.startRotationX.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19880862, guid: 56480d0c436b84b4ba158d3e374edd01, type: 3}
+      propertyPath: InitialModule.startRotationY.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19912656, guid: 56480d0c436b84b4ba158d3e374edd01, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 19970582, guid: 56480d0c436b84b4ba158d3e374edd01, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 19991300, guid: 56480d0c436b84b4ba158d3e374edd01, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 199140847963891848, guid: 56480d0c436b84b4ba158d3e374edd01, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 56480d0c436b84b4ba158d3e374edd01, type: 3}
 --- !u!1 &1824153036
 GameObject:
   m_ObjectHideFlags: 0
@@ -1956,8 +2142,9 @@ MonoBehaviour:
   cmSurface: {fileID: 1712006248}
   handOverlayer: {fileID: 519935418}
   linePainter: {fileID: 519935419}
+  myceliumParticle: {fileID: 513828313}
   myceliumController: {fileID: 1104312370}
-  mushroomController: {fileID: 0}
+  mushroomController: {fileID: 1104312371}
   underground: 0
   levelDatas:
   - {fileID: 11400000, guid: 1d0a133e24320604aa52b2a903fa0ccb, type: 2}
@@ -2145,3 +2332,4 @@ SceneRoots:
   - {fileID: 1847851145}
   - {fileID: 1371330706}
   - {fileID: 640342171}
+  - {fileID: 1807141713}

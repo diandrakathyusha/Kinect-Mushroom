@@ -85,7 +85,7 @@ public class HandOverlayer : MonoBehaviour
                                 cursorPos = Vector2.Lerp(cursorPos, new Vector2(xScaled, 1f - yScaled), smoothFactor * Time.deltaTime);
 
                                 // Update the particle system position
-                                Vector3 screenPos = new Vector3(cursorPos.x * Screen.width, (1f - cursorPos.y) * Screen.height, Camera.main.nearClipPlane);
+                                Vector3 screenPos = new Vector3(cursorPos.x * Screen.width, (1f - cursorPos.y) * Screen.height, Camera.main.nearClipPlane + 2f);
                                 Vector3 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
 
                                 handParticles.transform.position = worldPos;

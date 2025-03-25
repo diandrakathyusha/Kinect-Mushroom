@@ -9,6 +9,7 @@ public class LevelManager : MonoBehaviour
     public CinemachineVirtualCamera cmSurface;
     public HandOverlayer handOverlayer;
     public LinePainter linePainter;
+    public GameObject myceliumParticle;
     public MyceliumController myceliumController;
     public MushroomController mushroomController;
     public bool underground;
@@ -18,6 +19,8 @@ public class LevelManager : MonoBehaviour
 
     public void InitializeLevels()
     {
+        myceliumParticle.SetActive(false);
+
         for (int i = 0; i < lands.Length; i++)
         {
             lands[i].SetActive(false);
@@ -56,6 +59,7 @@ public class LevelManager : MonoBehaviour
 
     private void GoToUnderground()
     {
+        myceliumParticle.SetActive(true);
         handOverlayer.gameObject.SetActive(true);
         cmUnderground.Priority = 10;
         cmSurface.Priority = 5; // Underground view
@@ -64,6 +68,7 @@ public class LevelManager : MonoBehaviour
 
     public void GoToSurface()
     {
+        myceliumParticle.SetActive(false);
         linePainter.DeleteAllLines();
         handOverlayer.gameObject.SetActive(false);
         cmUnderground.Priority = 5;
