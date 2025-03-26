@@ -3,7 +3,12 @@ guid: df08e91c15f927b4b92821c41bf7e9e6
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: moss3Mat
+    second: {fileID: 2100000, guid: 12f3327295410e04ea95112d4f1e7a03, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
