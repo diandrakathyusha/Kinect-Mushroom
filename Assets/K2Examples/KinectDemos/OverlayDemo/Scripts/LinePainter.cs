@@ -2,120 +2,150 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class LinePainter : MonoBehaviour 
+public class LinePainter : MonoBehaviour
 {
-	[Tooltip("Line renderer used for the line drawing.")]
-	public LineRenderer linePrefab;
+    [Tooltip("Line renderer used for the line drawing.")]
+    public LineRenderer linePrefab;
 
-	[Tooltip("UI-Text to display information messages.")]
-	public UnityEngine.UI.Text infoText;
+    [Tooltip("UI-Text to display information messages.")]
+    public UnityEngine.UI.Text infoText;
 
+    [Tooltip("Hand particle system for the drawing effect.")]
+    public ParticleSystem handParticles;
 
-	private HandOverlayer handOverlayer = null;
-	private List<GameObject> linesDrawn = new List<GameObject>();
-	private LineRenderer currentLine;
-	private int lineVertexIndex = 2;
+    private HandOverlayer handOverlayer = null;
+    private List<GameObject> linesDrawn = new List<GameObject>();
+    private LineRenderer currentLine;
+    private int lineVertexIndex = 2;
 
-	void Start()
-	{
-		handOverlayer = GetComponent<HandOverlayer>();
-	}
+    void Start()
+    {
+        handOverlayer = GetComponent<HandOverlayer>();
 
+        if (handParticles == null)
+        {
+            Debug.LogError("Please assign a Particle System to 'handParticles'.");
+        }
+        else
+        {
+            handParticles.Stop();
+        }
+    }
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            // U-key means Undo
+            DeleteLastLine();
+        }
 
-	void Update()
-	{
-		if(Input.GetKeyDown(KeyCode.U))
-		{
-			// U-key means Undo
-			DeleteLastLine();
-		}
+        // Display info message when a user is detected
+        KinectManager manager = KinectManager.Instance;
+        if (manager && manager.IsInitialized() && manager.IsUserDetected())
+        {
+            if (infoText)
+            {
+                infoText.text = "Grip hand to start drawing. Press [U] to undo the last line.";
+            }
+        }
 
-		// display info message when a user is detected
-		KinectManager manager = KinectManager.Instance;
-		if(manager && manager.IsInitialized() && manager.IsUserDetected())
-		{
-			if(infoText)
-			{
-				infoText.text = "Grip hand to start drawing. Press [U] to undo the last line.";
-			}
-		}
+        if (currentLine == null)
+        {
+            StartNewLine();
+        }
 
-		
-		if(currentLine == null 
-			//&&		   (handOverlayer && (handOverlayer.GetLastHandEvent() == InteractionManager.HandEventType.Grip))
-			)
-		{
-			// start drawing lines
-			currentLine = Instantiate(linePrefab).GetComponent<LineRenderer>();
-			currentLine.name = "Line" + linesDrawn.Count;
-			currentLine.transform.parent = transform;
+        if (currentLine != null &&
+            (handOverlayer != null && (handOverlayer.GetLastHandEvent() == InteractionManager.HandEventType.Release)))
+        {
+            // End drawing lines
+            StopDrawing();
+        }
 
-			Vector3 cursorPos = handOverlayer.GetCursorPos();
-			cursorPos.z = Camera.main.nearClipPlane;
-			
-			Vector3 cursorSpacePos = Camera.main.ViewportToWorldPoint(cursorPos);
-			currentLine.SetPosition(0, cursorSpacePos);
-			currentLine.SetPosition(1, cursorSpacePos);
+        UpdateParticlePosition();
+    }
 
-			lineVertexIndex = 2;
-			linesDrawn.Add(currentLine.gameObject);
+    // Start a new line
+    private void StartNewLine()
+    {
+        currentLine = Instantiate(linePrefab).GetComponent<LineRenderer>();
+        currentLine.name = "Line" + linesDrawn.Count;
+        currentLine.transform.parent = transform;
 
-			StartCoroutine(DrawLine());
-		}
-		
-		if (currentLine != null &&
-		    (handOverlayer != null && (handOverlayer.GetLastHandEvent() == InteractionManager.HandEventType.Release)))
-		{
-			// end drawing lines
-			currentLine = null;
-		}
-	}
+        Vector3 cursorPos = handOverlayer.GetCursorPos();
+        cursorPos.z = Camera.main.nearClipPlane;
+        Vector3 cursorSpacePos = Camera.main.ViewportToWorldPoint(cursorPos);
 
-	// undo the last drawn line
-	public void DeleteLastLine()
-	{
-		if (linesDrawn.Count > 0)
-		{
-			GameObject goLastLine = linesDrawn[linesDrawn.Count-1];
+        currentLine.SetPosition(0, cursorSpacePos);
+        currentLine.SetPosition(1, cursorSpacePos);
 
-			linesDrawn.RemoveAt(linesDrawn.Count-1);
-			Destroy(goLastLine);
-		}
-	}
+        lineVertexIndex = 2;
+        linesDrawn.Add(currentLine.gameObject);
 
-	public void DeleteAllLines()
-	{
-		for (int i = linesDrawn.Count - 1; i >= 0; i--)
-		{
-			GameObject line = linesDrawn[i];
-			Destroy(line);
-		}
+        StartCoroutine(DrawLine());
+        handParticles.Play(); // Start the hand particles when drawing starts
+    }
 
-		linesDrawn.Clear(); // Clear the list after deleting all lines
-	}
+    // Stop drawing lines
+    private void StopDrawing()
+    {
+        currentLine = null;
+        handParticles.Stop(); // Stop the hand particles when drawing stops
+    }
 
-	// continue drawing line
-	IEnumerator DrawLine()
-	{
-		while(handOverlayer 
-			//&& (handOverlayer.GetLastHandEvent() == InteractionManager.HandEventType.Grip)
-			)
-		{
-			yield return new WaitForEndOfFrame();
+    // Update the position of the particle system
+    private void UpdateParticlePosition()
+    {
+        if (handParticles.isPlaying && handOverlayer != null)
+        {
+            Vector3 cursorPos = handOverlayer.GetCursorPos();
+            cursorPos.z = Camera.main.nearClipPlane;
+            Vector3 cursorSpacePos = Camera.main.ViewportToWorldPoint(cursorPos);
 
-			if (currentLine != null)
-			{
-				lineVertexIndex++;
-                currentLine.positionCount = lineVertexIndex;  //.SetVertexCount(lineVertexIndex);
+            handParticles.transform.position = cursorSpacePos;
+        }
+    }
 
-				Vector3 cursorPos = handOverlayer.GetCursorPos();
-				cursorPos.z = Camera.main.nearClipPlane;
+    // Undo the last drawn line
+    public void DeleteLastLine()
+    {
+        if (linesDrawn.Count > 0)
+        {
+            GameObject lastLine = linesDrawn[linesDrawn.Count - 1];
+            linesDrawn.RemoveAt(linesDrawn.Count - 1);
+            Destroy(lastLine);
+        }
+    }
 
-				Vector3 cursorSpacePos = Camera.main.ViewportToWorldPoint(cursorPos);
-				currentLine.SetPosition(lineVertexIndex - 1, cursorSpacePos);
-			}
-		}
-	}
+    public void DeleteAllLines()
+    {
+        for (int i = linesDrawn.Count - 1; i >= 0; i--)
+        {
+            GameObject line = linesDrawn[i];
+            Destroy(line);
+        }
 
+        linesDrawn.Clear(); // Clear the list after deleting all lines
+    }
+
+    // Continue drawing line
+    IEnumerator DrawLine()
+    {
+        while (handOverlayer != null && (handOverlayer.GetLastHandEvent() != InteractionManager.HandEventType.Release))
+        {
+            yield return new WaitForEndOfFrame();
+
+            if (currentLine != null)
+            {
+                lineVertexIndex++;
+                currentLine.positionCount = lineVertexIndex;
+
+                Vector3 cursorPos = handOverlayer.GetCursorPos();
+                cursorPos.z = Camera.main.nearClipPlane;
+
+                Vector3 cursorSpacePos = Camera.main.ViewportToWorldPoint(cursorPos);
+                currentLine.SetPosition(lineVertexIndex - 1, cursorSpacePos);
+            }
+        }
+    }
 }

@@ -13,14 +13,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        levelManager.InitializeLevels();
-        StartLevelLoop();
     }
 
-    public void StartLevelLoop()
-    {
-        StartCoroutine(levelManager.LoopLevels());
-    }
 
     public void OnMyceliumComplete()
     {
