@@ -32,11 +32,14 @@ public class LevelManager : MonoBehaviour
         StartCoroutine(LoopLevels());
     }
 
-    public void InitializeLevels()
+    void InitializeLevels()
     {
+        landWidth = CalculateLandWidth(lands[0]);
+        Debug.Log("Land Width: " + landWidth);
         for (int i = 0; i < lands.Length; i++)
         {
-            lands[i].SetActive(i == currentLevel);
+            lands[i].SetActive(true);
+            lands[i].transform.position = new Vector3(i * landWidth, 0f, 0f);  // Arrange lands in a row
         }
     }
 
@@ -68,6 +71,25 @@ public class LevelManager : MonoBehaviour
         underground = false;
     }
 
+    // Function to determine land width
+    private float CalculateLandWidth(GameObject land)
+    {
+        BoxCollider collider = land.GetComponent<BoxCollider>();
+        if (collider != null)
+        {
+            return collider.bounds.size.x;
+        }
+
+        Renderer renderer = land.GetComponent<Renderer>();
+        if (renderer != null)
+        {
+            return renderer.bounds.size.x;
+        }
+
+        Debug.LogWarning("Land width not found. Using default width.");
+        return 10f;  // Fallback value
+    }
+
     private void NextLevel()
     {
         StartCoroutine(TransitionToNextLevel());
@@ -75,64 +97,82 @@ public class LevelManager : MonoBehaviour
 
     private IEnumerator TransitionToNextLevel()
     {
-        int nextLevel = (currentLevel + 1) % lands.Length;
-        lands[nextLevel].SetActive(true);
-
         float transitionTime = 0f;
         float duration = 2f;
-
-        // Initial positions for cyclic movement
-        Vector3[] initialLandPositions = new Vector3[lands.Length];
-        for (int i = 0; i < lands.Length; i++)
-        {
-            initialLandPositions[i] = lands[i].transform.position;
-        }
-
-        Vector2 initialBgAPos = backgroundA.anchoredPosition;
-        Vector2 initialBgBPos = backgroundB.anchoredPosition;
 
         while (transitionTime < duration)
         {
             transitionTime += Time.deltaTime;
+            float moveAmount = landMoveSpeed * Time.deltaTime;
 
-            // Move lands to the left
-            float landMoveAmount = landMoveSpeed * Time.deltaTime;
+            // Move all lands to the left
             for (int i = 0; i < lands.Length; i++)
             {
-                lands[i].transform.position -= new Vector3(landMoveAmount, 0f, 0f);
-
-                // Loop lands cyclically
-                if (lands[i].transform.position.x <= -landWidth)
-                {
-                    lands[i].transform.position += new Vector3(landWidth * lands.Length, 0f, 0f);
-                }
+                lands[i].transform.position -= new Vector3(moveAmount, 0f, 0f);
             }
+
+            // Reposition the leftmost land to the far right
+            RepositionLands();
 
             // Scroll the background
-            float backgroundMoveAmount = backgroundScrollSpeed * Time.deltaTime;
-
-            backgroundA.anchoredPosition -= new Vector2(backgroundMoveAmount, 0f);
-            backgroundB.anchoredPosition -= new Vector2(backgroundMoveAmount, 0f);
-
-            // Loop the background for seamless effect
-            if (backgroundA.anchoredPosition.x <= -backgroundA.rect.width)
-            {
-                backgroundA.anchoredPosition = new Vector2(backgroundB.anchoredPosition.x + backgroundB.rect.width, backgroundA.anchoredPosition.y);
-            }
-
-            if (backgroundB.anchoredPosition.x <= -backgroundB.rect.width)
-            {
-                backgroundB.anchoredPosition = new Vector2(backgroundA.anchoredPosition.x + backgroundA.rect.width, backgroundB.anchoredPosition.y);
-            }
+            ScrollBackground();
 
             yield return null;
         }
 
-        // Deactivate the previous land after transition
-        lands[currentLevel].SetActive(false);
-        currentLevel = nextLevel;
+        // Move to the next level
+        currentLevel = (currentLevel + 1) % lands.Length;
         StartCoroutine(LoopLevels());
 
+    }
+
+    private void RepositionLands()
+    {
+        float minX = float.MaxValue;
+        float maxX = float.MinValue;
+        GameObject leftmostLand = null;
+
+        // Find the leftmost and rightmost lands
+        foreach (GameObject land in lands)
+        {
+            float landX = land.transform.position.x;
+
+            if (landX < minX)
+            {
+                minX = landX;
+                leftmostLand = land;
+            }
+
+            if (landX > maxX)
+            {
+                maxX = landX;
+            }
+        }
+
+        // If the leftmost land moves too far left, reposition it to the right
+        if (leftmostLand != null && minX <= -landWidth)
+        {
+            leftmostLand.transform.position = new Vector3(maxX + landWidth, 0f, 0f);
+        }
+    }
+
+    private void ScrollBackground()
+    {
+        float backgroundMoveAmount = backgroundScrollSpeed * Time.deltaTime;
+
+        backgroundA.anchoredPosition -= new Vector2(backgroundMoveAmount, 0f);
+        backgroundB.anchoredPosition -= new Vector2(backgroundMoveAmount, 0f);
+
+        // Loop the background seamlessly
+        if (backgroundA.anchoredPosition.x <= -backgroundA.rect.width)
+        {
+            backgroundA.anchoredPosition = new Vector2(backgroundB.anchoredPosition.x + backgroundB.rect.width, backgroundA.anchoredPosition.y);
+        }
+
+        if (backgroundB.anchoredPosition.x <= -backgroundB.rect.width)
+        {
+            backgroundB.anchoredPosition = new Vector2(backgroundA.anchoredPosition.x + backgroundA.rect.width, backgroundB.anchoredPosition.y);
+        }
     }
     public void ReleaseSpores()
     {
