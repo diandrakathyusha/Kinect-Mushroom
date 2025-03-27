@@ -19,6 +19,8 @@ public class LevelManager : MonoBehaviour
     public GameObject myceliumParticle;
     public MyceliumController myceliumController;
     public MushroomController mushroomController;
+    public int totalCollectibles;  // Set the total required collectibles in the Inspector
+
     public bool underground;
 
     private int currentLevel = 0;
@@ -52,6 +54,14 @@ public class LevelManager : MonoBehaviour
     public float GetMyceliumThreshold() => levelDatas[currentLevel].myceliumThreshold;
     public int GetSporeCount() => levelDatas[currentLevel].sporeCount;
 
+
+    public void CheckCollectionCompletion(int collectedCount)
+    {
+        if (collectedCount >= totalCollectibles)
+        {
+            GoToSurface();  // Transition back to the surface
+        }
+    }
     private void GoToUnderground()
     {
         myceliumParticle.SetActive(true);

@@ -7,11 +7,12 @@ TagManager:
   - Mycelium
   - Mushroom
   - Spores
+  - Collectible
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Collectibles
   - Water
   - UI
   - 

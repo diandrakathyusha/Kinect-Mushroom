@@ -30,7 +30,8 @@ public class HandOverlayer : MonoBehaviour
 
 	// last hand event (grip or release)
 	private InteractionManager.HandEventType lastHandEvent = InteractionManager.HandEventType.None;
-
+	private int collectedItems = 0;
+	public LevelManager levelManager;
 
 	/// <summary>
 	/// Gets the cursor position.
@@ -105,6 +106,15 @@ public class HandOverlayer : MonoBehaviour
 								float yScaled = posColor.y / manager.GetColorImageHeight();
 
 								cursorPos = Vector2.Lerp(cursorPos, new Vector2(xScaled, 1f - yScaled), smoothFactor * Time.deltaTime);
+								Vector3 worldCursorPos = Camera.main.ViewportToWorldPoint(new Vector3(cursorPos.x, cursorPos.y, Camera.main.nearClipPlane));
+
+								LayerMask collectibleLayer = LayerMask.GetMask("Collectibles");
+								Collider2D hitCollider = Physics2D.OverlapPoint(new Vector2(worldCursorPos.x, worldCursorPos.y), collectibleLayer);
+
+								if (hitCollider && hitCollider.CompareTag("Collectible"))
+								{
+									CollectItem(hitCollider.gameObject);								}
+
 							}
 						}
 					}
@@ -115,6 +125,16 @@ public class HandOverlayer : MonoBehaviour
 		}
 	}
 
+
+	private void CollectItem(GameObject item)
+	{
+		Debug.Log("Item Collected: " + item.name);
+		Destroy(item);  // Remove the item
+		collectedItems++;
+
+		// Notify LevelManager for completion check
+		levelManager.CheckCollectionCompletion(collectedItems);
+	}
 	void OnGUI()
 	{
 		InteractionManager intManager = InteractionManager.Instance;

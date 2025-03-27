@@ -99,7 +99,7 @@ public class LinePainter : MonoBehaviour
         if (handParticles.isPlaying && handOverlayer != null)
         {
             Vector3 cursorPos = handOverlayer.GetCursorPos();
-            cursorPos.z = Camera.main.nearClipPlane;
+            cursorPos.z = Camera.main.nearClipPlane + 2f;
             Vector3 cursorSpacePos = Camera.main.ViewportToWorldPoint(cursorPos);
 
             handParticles.transform.position = cursorSpacePos;
@@ -141,7 +141,7 @@ public class LinePainter : MonoBehaviour
                 currentLine.positionCount = lineVertexIndex;
 
                 Vector3 cursorPos = handOverlayer.GetCursorPos();
-                cursorPos.z = Camera.main.nearClipPlane;
+                cursorPos.z = Camera.main.nearClipPlane + 2f;
 
                 Vector3 cursorSpacePos = Camera.main.ViewportToWorldPoint(cursorPos);
                 currentLine.SetPosition(lineVertexIndex - 1, cursorSpacePos);
