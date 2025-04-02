@@ -3,7 +3,12 @@ guid: 9a940cbb8d3a53c41b2be5a9ec1569f4
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mushie3Mat
+    second: {fileID: 2100000, guid: d8592e55370f27340ae7b2ac39613f6f, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

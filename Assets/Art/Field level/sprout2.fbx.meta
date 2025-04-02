@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 8a9dd6a6a48ed2048ad29e620dd07a7b
+guid: 97b0bf23b2da6664e842e4c3e9bb6860
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,8 +7,13 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: hose_and_sprayMat
-    second: {fileID: 2100000, guid: 95ba6ed8de927794bbfeebf5fdb26cef, type: 2}
+      name: dying
+    second: {fileID: 2100000, guid: 3f2243ada6f37a249b141d56c572482e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: healthy
+    second: {fileID: 2100000, guid: 3f2243ada6f37a249b141d56c572482e, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

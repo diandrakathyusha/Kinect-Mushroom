@@ -1,14 +1,9 @@
 fileFormatVersion: 2
-guid: 8a9dd6a6a48ed2048ad29e620dd07a7b
+guid: f456d78fd17be1f448fb25d02f4006bd
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: hose_and_sprayMat
-    second: {fileID: 2100000, guid: 95ba6ed8de927794bbfeebf5fdb26cef, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0

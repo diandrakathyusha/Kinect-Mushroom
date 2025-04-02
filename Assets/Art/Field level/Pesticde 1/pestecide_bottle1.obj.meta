@@ -3,7 +3,12 @@ guid: 2f266801164cb684390722600899cf66
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: bottleMat
+    second: {fileID: 2100000, guid: 5c5b941bf7fb2e843b1298c25d7531e1, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
