@@ -19,7 +19,14 @@ public class HandColorOverlayer : MonoBehaviour
 
 	[Tooltip("Game object used to overlay the right hand.")]
 	public Transform rightHandOverlay;
-	
+
+	[Tooltip("Radius in which spores are affected by hand movements.")]
+	public float interactionRadius = 1.0f;
+
+	[Tooltip("Force applied to spores when hand moves near them.")]
+	public float pushForce = 5f;
+
+
 	//public float smoothFactor = 10f;
 
 	// reference to KinectManager
@@ -104,11 +111,31 @@ public class HandColorOverlayer : MonoBehaviour
 							posJoint = foregroundCamera.ScreenToWorldPoint(new Vector3(xScreen, yScreen, distanceToCamera));
 
 							overlayObj.position = posJoint;
+
+							AffectNearbySpores(posJoint);
+
 						}
 					}
 				}
 			}
 
+		}
+	}
+
+	private void AffectNearbySpores(Vector3 handPosition)
+	{
+		Collider[] hitColliders = Physics.OverlapSphere(handPosition, interactionRadius);
+		foreach (Collider hitCollider in hitColliders)
+		{
+			if (hitCollider.CompareTag("Spores"))
+			{
+				Rigidbody sporeRb = hitCollider.GetComponent<Rigidbody>();
+				if (sporeRb != null)
+				{
+					Vector3 pushDirection = (hitCollider.transform.position - handPosition).normalized;
+					sporeRb.AddForce(pushDirection * pushForce, ForceMode.Impulse);
+				}
+			}
 		}
 	}
 
