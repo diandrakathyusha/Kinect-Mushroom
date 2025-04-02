@@ -8,6 +8,7 @@ TagManager:
   - Mushroom
   - Spores
   - Collectible
+  - Hand
   layers:
   - Default
   - TransparentFX

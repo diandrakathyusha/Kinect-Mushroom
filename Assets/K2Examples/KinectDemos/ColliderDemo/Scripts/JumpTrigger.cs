@@ -1,24 +1,71 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class JumpTrigger : MonoBehaviour 
+public class JumpTrigger : MonoBehaviour
 {
-	void OnTriggerEnter()
-	{
-		//Debug.Log ("Jump trigger activated");
+    [Tooltip("Spore Prefab to Spawn")]
+    public GameObject sporePrefab;
 
-		// start the animation clip
-		Animation animation = gameObject.GetComponent<Animation>();
-		if(animation != null && !animation.isPlaying)
-		{
-			animation.Play();
-		}
+    [Tooltip("Spawn Area Size")]
+    public Vector3 spawnArea = new Vector3(1f, 0.5f, 1f);
 
-		// play the audio clip
-		AudioSource audioSrc = gameObject.GetComponent<AudioSource>();
-		if(audioSrc != null && !audioSrc.isPlaying)
-		{
-			audioSrc.Play();
-		}
-	}
+    [Tooltip("Maximum spores per trigger")]
+    public int maxSporeCount = 5;
+
+    [Tooltip("Spore launch force")]
+    public float sporeLaunchForce = 2f;
+
+    private int currentSporeCount = 0;
+    public MushroomController mushroomController;
+
+    void OnTriggerEnter(Collider other)
+    {
+        // Only trigger if a hand enters
+        if (other.CompareTag("Hand"))
+        {
+            // Start animation (if any)
+            Animation animation = gameObject.GetComponent<Animation>();
+            if (animation != null && !animation.isPlaying)
+            {
+                animation.Play();
+            }
+
+            // Play audio (if any)
+            AudioSource audioSrc = gameObject.GetComponent<AudioSource>();
+            if (audioSrc != null && !audioSrc.isPlaying)
+            {
+                audioSrc.Play();
+            }
+
+            // Spawn spores if limit is not reached
+            if (currentSporeCount < maxSporeCount)
+            {
+                SpawnSpore();
+                currentSporeCount++;
+            }
+        }
+    }
+
+    void SpawnSpore()
+    {
+        mushroomController.ReleaseSpores();
+        // Spawn at the mushroom's position
+        Vector3 spawnPos = transform.position;
+
+        // Create the spore
+        GameObject newSpore = Instantiate(sporePrefab, spawnPos, Quaternion.identity);
+
+        // Add random force to spread the spore
+        Rigidbody rb = newSpore.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            Vector3 randomDirection = new Vector3(
+                Random.Range(-1f, 1f),   // Spread left/right
+                Random.Range(0.5f, 1f),  // Always move upward
+                Random.Range(-1f, 1f)    // Spread forward/backward
+            ).normalized;
+
+            rb.AddForce(randomDirection * sporeLaunchForce, ForceMode.Impulse);
+        }
+    }
 }
