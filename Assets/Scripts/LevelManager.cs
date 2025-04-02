@@ -76,7 +76,7 @@ public class LevelManager : MonoBehaviour
     private void GoToUnderground()
     {
         myceliumParticle.SetActive(true);
-        linePainter.gameObject.SetActive(true);
+        handOverlayer.gameObject.SetActive(true);
         cmUnderground.Priority = 10;
         cmSurface.Priority = 5;
         underground = true;
@@ -86,7 +86,7 @@ public class LevelManager : MonoBehaviour
     {
         myceliumParticle.SetActive(false);
         linePainter.DeleteAllLines();
-        linePainter.gameObject.SetActive(false);
+        handOverlayer.gameObject.SetActive(false);
         cmUnderground.Priority = 5;
         cmSurface.Priority = 10;
         underground = false;
