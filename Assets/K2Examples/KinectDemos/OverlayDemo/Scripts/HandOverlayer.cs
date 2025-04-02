@@ -118,15 +118,6 @@ public class HandOverlayer : MonoBehaviour
 	}
 
 
-	private void CollectItem(GameObject item)
-	{
-		Debug.Log("Item Collected: " + item.name);
-		Destroy(item);  // Remove the item
-		collectedItems++;
-
-		// Notify LevelManager for completion check
-		levelManager.CheckCollectionCompletion(collectedItems);
-	}
 	void OnGUI()
 	{
 		InteractionManager intManager = InteractionManager.Instance;

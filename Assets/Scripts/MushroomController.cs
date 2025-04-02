@@ -23,7 +23,7 @@ public class MushroomController : MonoBehaviour
         MushroomGestureListener.OnTapGesture -= ReleaseSpores;
     }
 
-    private void ReleaseSpores()
+    public void ReleaseSpores()
     {
         releasedSpores += 1;
         Debug.Log("Spores Released: " + releasedSpores);
