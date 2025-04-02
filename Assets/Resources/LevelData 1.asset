@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: LevelData 1
   m_EditorClassIdentifier: 
   levelName: land A
-  myceliumThreshold: 0.8
+  myceliumThreshold: 0.4
   sporeCount: 10

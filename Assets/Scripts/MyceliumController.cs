@@ -23,7 +23,7 @@ public class MyceliumController : MonoBehaviour
         MushroomGestureListener.OnWaveGesture -= SpreadMycelium;
     }
 
-    private void SpreadMycelium()
+    public void SpreadMycelium()
     {
         spreadProgress += 0.1f;
         UpdateVisuals();

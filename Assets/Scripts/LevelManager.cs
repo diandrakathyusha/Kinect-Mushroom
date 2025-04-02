@@ -4,13 +4,14 @@ using Cinemachine;
 
 public class LevelManager : MonoBehaviour
 {
-    public GameObject[] lands;  // All land objectsl
-    public float landMoveSpeed = 5f;  // Speed of moving lands
+    public GameObject[] lands;  // All land objects
+    public float landMoveSpeed = 5f;
+
     [Header("UI Background Settings")]
     public RectTransform backgroundA;
     public RectTransform backgroundB;
-    public float backgroundScrollSpeed = 100f;  // Scrolling speed for the background
-    public float landWidth = 10f;  // Width of each land
+    public float backgroundScrollSpeed = 100f;
+    public float landWidth = 10f;
 
     public CinemachineVirtualCamera cmUnderground;
     public CinemachineVirtualCamera cmSurface;
@@ -19,12 +20,11 @@ public class LevelManager : MonoBehaviour
     public GameObject myceliumParticle;
     public MyceliumController myceliumController;
     public MushroomController mushroomController;
-    public int totalCollectibles;  // Set the total required collectibles in the Inspector
+    public int totalCollectibles;
 
     public bool underground;
 
     private int currentLevel = 0;
-    public LevelData[] levelDatas;
 
     private Vector3 initialBackgroundPos;
 
@@ -41,27 +41,38 @@ public class LevelManager : MonoBehaviour
         for (int i = 0; i < lands.Length; i++)
         {
             lands[i].SetActive(true);
-            lands[i].transform.position = new Vector3(i * landWidth, 0f, 0f);  // Arrange lands in a row
+            lands[i].transform.position = new Vector3(i * landWidth, 0f, 0f);
         }
     }
 
     public IEnumerator LoopLevels()
     {
-        yield return new WaitForSeconds(5f);  // Initial delay before starting the first level
+        yield return new WaitForSeconds(5f);
         GoToUnderground();
     }
 
-    public float GetMyceliumThreshold() => levelDatas[currentLevel].myceliumThreshold;
-    public int GetSporeCount() => levelDatas[currentLevel].sporeCount;
+    // Fetch mycelium threshold from the active land's LevelData
+    public float GetMyceliumThreshold()
+    {
+        Land currentLand = lands[currentLevel].GetComponent<Land>();
+        return currentLand != null && currentLand.levelData != null ? currentLand.levelData.myceliumThreshold : 0f;
+    }
 
+    // Fetch spore count from the active land's LevelData
+    public int GetSporeCount()
+    {
+        Land currentLand = lands[currentLevel].GetComponent<Land>();
+        return currentLand != null && currentLand.levelData != null ? currentLand.levelData.sporeCount : 0;
+    }
 
     public void CheckCollectionCompletion(int collectedCount)
     {
         if (collectedCount >= totalCollectibles)
         {
-            GoToSurface();  // Transition back to the surface
+            GoToSurface();
         }
     }
+
     private void GoToUnderground()
     {
         myceliumParticle.SetActive(true);
@@ -81,23 +92,16 @@ public class LevelManager : MonoBehaviour
         underground = false;
     }
 
-    // Function to determine land width
     private float CalculateLandWidth(GameObject land)
     {
         BoxCollider collider = land.GetComponent<BoxCollider>();
-        if (collider != null)
-        {
-            return collider.bounds.size.x;
-        }
+        if (collider != null) return collider.bounds.size.x;
 
         Renderer renderer = land.GetComponent<Renderer>();
-        if (renderer != null)
-        {
-            return renderer.bounds.size.x;
-        }
+        if (renderer != null) return renderer.bounds.size.x;
 
         Debug.LogWarning("Land width not found. Using default width.");
-        return 10f;  // Fallback value
+        return 10f;
     }
 
     private void NextLevel()
@@ -115,25 +119,19 @@ public class LevelManager : MonoBehaviour
             transitionTime += Time.deltaTime;
             float moveAmount = landMoveSpeed * Time.deltaTime;
 
-            // Move all lands to the left
-            for (int i = 0; i < lands.Length; i++)
+            foreach (GameObject land in lands)
             {
-                lands[i].transform.position -= new Vector3(moveAmount, 0f, 0f);
+                land.transform.position -= new Vector3(moveAmount, 0f, 0f);
             }
 
-            // Reposition the leftmost land to the far right
             RepositionLands();
-
-            // Scroll the background
             ScrollBackground();
 
             yield return null;
         }
 
-        // Move to the next level
         currentLevel = (currentLevel + 1) % lands.Length;
         StartCoroutine(LoopLevels());
-
     }
 
     private void RepositionLands()
@@ -142,7 +140,6 @@ public class LevelManager : MonoBehaviour
         float maxX = float.MinValue;
         GameObject leftmostLand = null;
 
-        // Find the leftmost and rightmost lands
         foreach (GameObject land in lands)
         {
             float landX = land.transform.position.x;
@@ -159,7 +156,6 @@ public class LevelManager : MonoBehaviour
             }
         }
 
-        // If the leftmost land moves too far left, reposition it to the right
         if (leftmostLand != null && minX <= -landWidth)
         {
             leftmostLand.transform.position = new Vector3(maxX + landWidth, 0f, 0f);
@@ -173,7 +169,6 @@ public class LevelManager : MonoBehaviour
         backgroundA.anchoredPosition -= new Vector2(backgroundMoveAmount, 0f);
         backgroundB.anchoredPosition -= new Vector2(backgroundMoveAmount, 0f);
 
-        // Loop the background seamlessly
         if (backgroundA.anchoredPosition.x <= -backgroundA.rect.width)
         {
             backgroundA.anchoredPosition = new Vector2(backgroundB.anchoredPosition.x + backgroundB.rect.width, backgroundA.anchoredPosition.y);
@@ -184,6 +179,7 @@ public class LevelManager : MonoBehaviour
             backgroundB.anchoredPosition = new Vector2(backgroundA.anchoredPosition.x + backgroundA.rect.width, backgroundB.anchoredPosition.y);
         }
     }
+
     public void ReleaseSpores()
     {
         Debug.Log("Spores Released!");

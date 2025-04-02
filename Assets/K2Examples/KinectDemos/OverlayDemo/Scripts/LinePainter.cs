@@ -13,7 +13,7 @@ public class LinePainter : MonoBehaviour
     [Tooltip("Hand particle system for the drawing effect.")]
     public ParticleSystem handParticles;
 
-    private HandOverlayer handOverlayer = null;
+    public HandOverlayer handOverlayer = null;
     private List<GameObject> linesDrawn = new List<GameObject>();
     private LineRenderer currentLine;
     private int lineVertexIndex = 2;
