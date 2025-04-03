@@ -13,11 +13,16 @@ public class JumpTrigger : MonoBehaviour
     public int maxSporeCount = 5;
 
     [Tooltip("Spore launch force")]
-    public float sporeLaunchForce = 2f;
+    public float sporeLaunchForce = 1f;
 
     private int currentSporeCount = 0;
-    public MushroomController mushroomController;
+    private GameObject GameManager;
 
+    void Start()
+    {
+        // Find the GameObject by name (or tag, etc.)
+        GameManager = GameObject.Find("GameManager"); // Replace "MyTargetObject" with the actual name
+    }
     void OnTriggerEnter(Collider other)
     {
         // Only trigger if a hand enters
@@ -48,6 +53,7 @@ public class JumpTrigger : MonoBehaviour
 
     void SpawnSpore()
     {
+        MushroomController mushroomController = GameManager.GetComponent<MushroomController>();
         mushroomController.ReleaseSpores();
         // Spawn at the mushroom's position
         Vector3 spawnPos = transform.position;

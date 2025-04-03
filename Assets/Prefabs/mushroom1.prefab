@@ -239,9 +239,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e54c4e63856110c438bec719f0bf6771, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sporePrefab: {fileID: 2933434121698557267, guid: 7d3657a1ec0ce014fb001a97f9c06e24, type: 3}
+  sporePrefab: {fileID: 8988803122490636449, guid: 588850a0570033341af9e1fe00da8fb9, type: 3}
   spawnArea: {x: 1, y: 0.5, z: 1}
-  maxSporeCount: 5
+  maxSporeCount: 4
+  sporeLaunchForce: 1
 --- !u!135 &7606768395775654919
 SphereCollider:
   m_ObjectHideFlags: 0

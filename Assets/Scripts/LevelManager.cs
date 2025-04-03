@@ -5,6 +5,10 @@ using Cinemachine;
 public class LevelManager : MonoBehaviour
 {
     public GameObject[] lands;  // All land objects
+    public GameObject MyceliumDots;
+    public GameObject leftHand;
+    public GameObject rightHand;
+
     public float landMoveSpeed = 5f;
 
     [Header("UI Background Settings")]
@@ -30,6 +34,9 @@ public class LevelManager : MonoBehaviour
 
     void Start()
     {
+        leftHand.SetActive(false);
+        rightHand.SetActive(false);
+        MyceliumDots.SetActive(false);
         InitializeLevels();
         StartCoroutine(LoopLevels());
     }
@@ -75,6 +82,9 @@ public class LevelManager : MonoBehaviour
 
     private void GoToUnderground()
     {
+        leftHand.SetActive(false);
+        rightHand.SetActive(false);
+        MyceliumDots.SetActive(true);
         myceliumParticle.SetActive(true);
         linePainter.gameObject.SetActive(true);
         cmUnderground.Priority = 10;
@@ -84,6 +94,9 @@ public class LevelManager : MonoBehaviour
 
     public void GoToSurface()
     {
+        leftHand.SetActive(true);
+        rightHand.SetActive(true);
+        MyceliumDots.SetActive(false);
         myceliumParticle.SetActive(false);
         linePainter.DeleteAllLines();
         linePainter.gameObject.SetActive(false);

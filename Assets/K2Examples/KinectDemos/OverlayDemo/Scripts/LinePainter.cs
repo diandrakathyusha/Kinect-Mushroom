@@ -13,7 +13,7 @@ public class LinePainter : MonoBehaviour
     [Tooltip("Hand particle system for the drawing effect.")]
     public ParticleSystem handParticles;
 
-    public HandOverlayer handOverlayer = null;
+    private HandOverlayer handOverlayer = null;
     private List<GameObject> linesDrawn = new List<GameObject>();
     private LineRenderer currentLine;
     private int lineVertexIndex = 2;
@@ -141,7 +141,7 @@ public class LinePainter : MonoBehaviour
                 currentLine.positionCount = lineVertexIndex;
 
                 Vector3 cursorPos = handOverlayer.GetCursorPos();
-                cursorPos.z = Camera.main.nearClipPlane + 2f;
+                cursorPos.z = Camera.main.nearClipPlane + 1f;
 
                 Vector3 cursorSpacePos = Camera.main.ViewportToWorldPoint(cursorPos);
                 currentLine.SetPosition(lineVertexIndex - 1, cursorSpacePos);
